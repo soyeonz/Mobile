@@ -8,6 +8,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.StringReader;
 import java.util.ArrayList;
 
+import lecture.mobile.final_project.ma01_20141105.model.CourseOfTravel;
+
 /**
  * Created by cooling on 2016-10-05.
  */

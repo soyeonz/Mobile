@@ -1,9 +1,9 @@
-package lecture.mobile.final_project.ma01_20141105;
+package lecture.mobile.final_project.ma01_20141105.model;
 
 /**
  * Created by USER on 2016-10-12.
  */
-
+//테마별 코스
 public class CourseOfTravel {
     private int _id;
     private String title; //제목

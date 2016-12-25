@@ -50,8 +50,12 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SearchMapsActivity"
-            android:label="@string/title_activity_search_maps"></activity>
+            android:name=".search.SearchMapsActivity"
+            android:label="@string/title_activity_search_maps" />
+        <activity
+            android:name=".youtube.YoutubeActivity"
+            android:label="@string/title_activity_youtube"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -1,33 +1,42 @@
-package lecture.mobile.final_project.ma01_20141105;
+package lecture.mobile.final_project.ma01_20141105.youtube;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.MotionEvent;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.Toast;
 
-import lecture.mobile.final_project.ma01_20141105.search.SearchMapsActivity;
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 
-public class MainListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    ImageView button1,button2,button3;
+import lecture.mobile.final_project.ma01_20141105.DeveloperKey;
+
+public class YoutubeActivity extends YouTubeBaseActivity
+        implements YouTubePlayer.OnInitializedListener, NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int RECOVERY_DIALOG_REQUEST = 10000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_list);
+        setContentView(R.layout.activity_youtube);
+        Log.d("youtube Test",
+                "사용가능여부:" + YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,54 +55,9 @@ public class MainListActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //main button
-        button1 = (ImageView) findViewById(R.id.btn_search);
-        button2 = (ImageView) findViewById(R.id.btn_course);
-        button3 = (ImageView) findViewById(R.id.btn_youtube);
-        button1.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    button1.setBackgroundColor(Color.parseColor("#88000000"));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    //인텐트 설정
-                    Intent intent = new Intent(getApplicationContext(), SearchMapsActivity.class);
-                    startActivity(intent);
-                    button1.setBackgroundColor(Color.parseColor("#66000000"));
-                }
-                return true;
-            }
-        });
-        button2.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    button1.setBackgroundColor(Color.parseColor("#88000000"));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    //인텐트 설정
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    button1.setBackgroundColor(Color.parseColor("#66000000"));
-                }
-                return true;
-            }
-        });
-        button3.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    button1.setBackgroundColor(Color.parseColor("#88000000"));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    //인텐트 설정
-                    Intent intent = new Intent(getApplicationContext(), lecture.mobile.final_project.ma01_20141105.YoutubeActivity.class);
-                    startActivity(intent);
-                    button1.setBackgroundColor(Color.parseColor("#66000000"));
-                }
-                return true;
-            }
-        });
+        getYouTubePlayerProvider().initialize(DeveloperKey.DEVELOPER_KEY, this);
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -107,7 +71,7 @@ public class MainListActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_list, menu);
+        getMenuInflater().inflate(R.menu.youtube, menu);
         return true;
     }
 
@@ -127,7 +91,6 @@ public class MainListActivity extends AppCompatActivity
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -150,4 +113,44 @@ public class MainListActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                        YouTubePlayer player, boolean wasRestored) {
+        if (!wasRestored) {
+            //player.cueVideo("wKJ9KzGQq0w"); //video id.
+
+            player.cueVideo("IA1hox-v0jQ");  //http://www.youtube.com/watch?v=IA1hox-v0jQ
+
+            //cueVideo(String videoId)
+            //지정한 동영상의 미리보기 이미지를 로드하고 플레이어가 동영상을 재생하도록 준비하지만
+            //play()를 호출하기 전에는 동영상 스트림을 다운로드하지 않습니다.
+            //https://developers.google.com/youtube/android/player/reference/com/google/android/youtube/player/YouTubePlayer
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                        YouTubeInitializationResult errorReason) {
+        if (errorReason.isUserRecoverableError()) {
+            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
+        } else {
+            String errorMessage = String.format(
+                    getString(R.string.error_player), errorReason.toString());
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
+        return (YouTubePlayerView) findViewById(R.id.youtube_view);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RECOVERY_DIALOG_REQUEST) {
+            // Retry initialization if user performed a recovery action
+            getYouTubePlayerProvider().initialize(DeveloperKey.DEVELOPER_KEY, this);
+        }
+    }
+
 }

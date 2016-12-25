@@ -19,12 +19,12 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+
+import lecture.mobile.final_project.ma01_20141105.model.CourseOfTravel;
 
 public class MainActivity extends AppCompatActivity {
 
